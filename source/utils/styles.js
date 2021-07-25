@@ -11,7 +11,9 @@ export const Styles = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 16
   },
-  textInput: {
+  textStyle: {
+    width: '100%',
+    textAlign: 'right',
     fontSize: 30,
     color: 'white'
   },
