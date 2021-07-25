@@ -12,7 +12,7 @@ import { handleOperation } from "../utils/calculations";
 
 export default function Calc () {
 
-  const [calculatorValue, setCalculatorValue] = useState('')
+  const [calculatorValue, setCalculatorValue] = useState('0')
   const [operatorValue, setOperatorValue] = useState({ isCurrent: false, value: null })
 
   return <CalculatorContext.Provider value={{ operator: operatorValue, updateValues: handleItemPress }}>
