@@ -44,11 +44,17 @@ export const Styles = StyleSheet.create({
   btnBgColor: {
     backgroundColor: 'gray'
   },
+  selectedBgColor: {
+    backgroundColor: 'white'
+  },
   darkTextColor: {
     color: 'black'
   },
   lightTextColor: {
     color: 'white'
+  },
+  selectedTextColor: {
+    color: 'orange'
   },
   buttonText: {
     fontSize: 18,
