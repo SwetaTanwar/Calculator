@@ -18,9 +18,14 @@ function applyOperator (currentValue, calculatorValue, operatorValue) {
 
   switch(currentValue) {
     case OPERATORS.CLEAR:
-      return { operatorObj, value }
+      break
     case OPERATORS.SIGN:
       value = calculatorValue * -1
-      return { operatorObj, value }
+      break
+    case OPERATORS.PERCENT:
+      value = calculatorValue / 100
+      break
   }
+
+  return { operatorObj, value }
 }

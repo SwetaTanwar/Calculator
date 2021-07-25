@@ -3,7 +3,7 @@ import {Dimensions} from "react-native";
 export const OPERATORS = {
   'CLEAR': 'C',
   'SIGN': '+/-',
-  'MODULO': '%',
+  'PERCENT': '%',
   'DIVIDE': '/',
   'MULTIPLY': '*',
   'MINUS': '-',
