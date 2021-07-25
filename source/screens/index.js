@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 
-import { Styles } from "../utils/styles";
-import CalculatorRow from "../components/calculatorRow";
-import { isOperator } from "../utils/validations";
-import CalculatorInput from "../components/calculatorInput";
 import { CalculatorContext } from "../context";
+
+import CalculatorRow from "../components/calculatorRow";
+import CalculatorInput from "../components/calculatorInput";
+
+import { Styles } from "../utils/styles";
+
+import { handleOperation } from "../utils/calculations";
 
 export default function Calc () {
 
   const [calculatorValue, setCalculatorValue] = useState('')
-  const [operator, setOperator] = useState({ isCurrent: false, value: null })
+  const [operatorValue, setOperatorValue] = useState({ isCurrent: false, value: null })
 
-  return <CalculatorContext.Provider value={{ operator, updateValues }}>
+  return <CalculatorContext.Provider value={{ operator: operatorValue, updateValues: handleItemPress }}>
     <View style={Styles.container}>
       <CalculatorInput value={calculatorValue}/>
       <View style={Styles.container}>
@@ -25,13 +28,10 @@ export default function Calc () {
     </View>
   </CalculatorContext.Provider>
 
-  function updateValues (text) {
-    const updatedText = calculatorValue + text + ''
-    if (isOperator(text)) {
-      setOperator({isCurrent: true, value: text})
-    } else {
-      setCalculatorValue(updatedText)
-      setOperator(prevValue => ({...prevValue, isCurrent: false}))
-    }
+  function handleItemPress (text) {
+    const { operatorObj, value } = handleOperation(text, calculatorValue, operatorValue)
+
+    setCalculatorValue(value)
+    setOperatorValue(operatorObj)
   }
 }
