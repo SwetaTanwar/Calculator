@@ -12,12 +12,12 @@ import { handleOperation } from "../utils/calculations";
 
 export default function Calc () {
 
-  const [calculatorValue, setCalculatorValue] = useState('0')
-  const [operatorValue, setOperatorValue] = useState({ isCurrent: false, value: null })
+  const [calculatorValue, setCalculatorValue] = useState({current: '0', previous: '0'})
+  const [operatorValue, setOperatorValue] = useState({ isCurrent: false, value: null, func: null })
 
   return <CalculatorContext.Provider value={{ operator: operatorValue, updateValues: handleItemPress }}>
     <View style={Styles.container}>
-      <CalculatorInput value={calculatorValue}/>
+      <CalculatorInput value={calculatorValue.current}/>
       <View style={Styles.container}>
         <CalculatorRow btn1={'C'} btn2={'+/-'} btn3={'%'} btn4={'/'} isTop={true} />
         <CalculatorRow btn1={'7'} btn2={'8'} btn3={'9'} btn4={'*'} />
@@ -29,9 +29,9 @@ export default function Calc () {
   </CalculatorContext.Provider>
 
   function handleItemPress (text) {
-    const { operatorObj, value } = handleOperation(text, calculatorValue, operatorValue)
+    const { operatorObj, valueObj } = handleOperation(text, calculatorValue, operatorValue)
 
-    setCalculatorValue(value)
+    setCalculatorValue(valueObj)
     setOperatorValue(operatorObj)
   }
 }

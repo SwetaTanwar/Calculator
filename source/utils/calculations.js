@@ -3,28 +3,70 @@ import { isOperator } from "./validations";
 
 export const handleOperation = (currentValue, calculatorValue, operatorValue) => {
   if (!isOperator(currentValue)) {
-    const value = calculatorValue === '0' ? currentValue + '' : calculatorValue + currentValue
-    const operatorObj = { isCurrent: false, value: operatorValue.value }
-    return {operatorObj, value}
+    let valueObj = {}
+    if (operatorValue.isCurrent)  {
+      valueObj = {
+        current: currentValue,
+        previous: calculatorValue.current
+      }
+    } else {
+      valueObj = {
+        current: calculatorValue.current === '0' ? currentValue + '' : calculatorValue.current + currentValue,
+        previous: calculatorValue.current
+      }
+    }
+    const operatorObj = { ...operatorValue , isCurrent: false }
+    return {operatorObj, valueObj}
   } else {
     return applyOperator(currentValue, calculatorValue, operatorValue)
   }
 }
 
 function applyOperator (currentValue, calculatorValue, operatorValue) {
-  let operatorObj = { isCurrent: false, value: null }
-  let value = '0'
+  let operatorObj = { isCurrent: false, value: null, func: null }
+  let initialValueObj = { current: '0', previous: '0' }
+  let valueObj = calculatorValue
 
   switch(currentValue) {
     case OPERATORS.CLEAR:
+      valueObj = initialValueObj
       break
     case OPERATORS.SIGN:
-      value = calculatorValue * -1
+      valueObj.current = calculatorValue.current * -1
       break
     case OPERATORS.PERCENT:
-      value = calculatorValue / 100
+      valueObj.current = calculatorValue.current / 100
+      break
+    case OPERATORS.EQUALS:
+      valueObj.current = operatorValue.func(calculatorValue.previous, calculatorValue.current)
+      valueObj.previous = '0'
+      break
+    case OPERATORS.DIVIDE:
+      operatorObj = { isCurrent: true, value: '/', func: divide }
+      break
+    case OPERATORS.MULTIPLY:
+      operatorObj = { isCurrent: true, value: '*', func: multiply }
+      break
+    case OPERATORS.MINUS:
+      operatorObj = { isCurrent: true, value: '-', func: minus }
+      break
+    case OPERATORS.PLUS:
+      operatorObj = { isCurrent: true, value: '+', func: plus }
       break
   }
 
-  return { operatorObj, value }
+  return { operatorObj, valueObj }
+}
+
+const divide = (operand1, operand2) => {
+  return operand1 / operand2
+}
+const multiply = (operand1, operand2) => {
+  return operand1 * operand2
+}
+const minus = (operand1, operand2) => {
+  return operand1 - operand2
+}
+const plus = (operand1, operand2) => {
+  return operand1 + operand2
 }
