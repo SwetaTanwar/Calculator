@@ -1,17 +1,26 @@
 import { OPERATORS } from "./constants";
 import { isOperator } from "./validations";
 
-export const handleOperation = (text, calculatorValue, operatorValue) => {
-  const operator = operatorValue.value
-  let operatorObj = {}
+export const handleOperation = (currentValue, calculatorValue, operatorValue) => {
+
+  if (!isOperator(currentValue)) {
+    const value = calculatorValue + currentValue + ''
+    const operatorObj = { isCurrent: false, value: operatorValue.value }
+    return {operatorObj, value}
+  } else {
+    return applyOperator(currentValue, calculatorValue, operatorValue)
+  }
+}
+
+function applyOperator (currentValue, calculatorValue, operatorValue) {
+  let operatorObj = { isCurrent: false, value: null }
   let value =  ''
 
-  if (!isOperator(text)) {
-    value = calculatorValue + text + ''
-    operatorObj = { isCurrent: false, value: operator }
-  } else if (operator === OPERATORS.CLEAR) {
-    operatorObj = { isCurrent: false, value: null }
+  switch(currentValue) {
+    case OPERATORS.CLEAR:
+      return { operatorObj, value }
+    case OPERATORS.SIGN:
+      value = calculatorValue * -1
+      return { operatorObj, value }
   }
-
-  return {operatorObj, value}
 }
