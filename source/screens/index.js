@@ -9,6 +9,7 @@ import CalculatorInput from '../components/calculatorInput';
 import {Styles} from '../utils/styles';
 
 import {handleOperation} from '../utils/calculations';
+import {OPERATORS} from '../utils/constants';
 
 export default function Calc() {
   const [calculatorValue, setCalculatorValue] = useState({
@@ -20,6 +21,7 @@ export default function Calc() {
     value: null,
     func: null,
   });
+  const [clearOnNextKeyPress, setClearOnNextKeyPress] = useState(false);
 
   return (
     <CalculatorContext.Provider
@@ -48,8 +50,10 @@ export default function Calc() {
       text,
       calculatorValue,
       operatorValue,
+      clearOnNextKeyPress,
     );
 
+    setClearOnNextKeyPress(text === OPERATORS.EQUALS);
     setCalculatorValue({...valueObj});
     setOperatorValue({...operatorObj});
   }

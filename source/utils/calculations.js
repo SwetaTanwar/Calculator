@@ -5,6 +5,7 @@ export const handleOperation = (
   currentValue,
   calculatorValue,
   operatorValue,
+  clearOnNextKeyPress,
 ) => {
   if (!isOperator(currentValue)) {
     let valueObj = {};
@@ -16,7 +17,7 @@ export const handleOperation = (
     } else {
       valueObj = {
         current:
-          calculatorValue.current === '0'
+          calculatorValue.current === '0' || clearOnNextKeyPress
             ? currentValue + ''
             : calculatorValue.current + currentValue,
         previous: calculatorValue.current,
