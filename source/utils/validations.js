@@ -11,6 +11,6 @@ export const isOperationInProgress = (
     calculatorValue.previous !== '0' &&
     calculatorValue.current !== '0' &&
     operatorValue.func !== null &&
-    !['C', '=', '+/-'].includes(currentValue)
+    ![OPERATORS.CLEAR, OPERATORS.EQUALS, OPERATORS.SIGN].includes(currentValue)
   );
 };
