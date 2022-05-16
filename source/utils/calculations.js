@@ -1,5 +1,5 @@
-import {OPERATORS} from './constants';
-import {isOperator} from './validations';
+import {OPERATORS, INITIAL_STATE} from './constants';
+import {isOperator, isOperationInProgress} from './validations';
 
 export const handleOperation = (
   currentValue,
@@ -30,9 +30,18 @@ export const handleOperation = (
 };
 
 function applyOperator(currentValue, calculatorValue, operatorValue) {
-  let operatorObj = {isCurrent: false, value: null, func: null};
-  let initialValueObj = {current: '0', previous: '0'};
+  let operatorObj = INITIAL_STATE.operatorObj;
+  let initialValueObj = INITIAL_STATE.initialValueObj;
+
   let valueObj = calculatorValue;
+
+  if (isOperationInProgress(currentValue, calculatorValue, operatorValue)) {
+    valueObj.current = operatorValue.func(
+      calculatorValue.previous,
+      calculatorValue.current,
+    );
+    valueObj.previous = '0';
+  }
 
   switch (currentValue) {
     case OPERATORS.CLEAR:
@@ -40,6 +49,7 @@ function applyOperator(currentValue, calculatorValue, operatorValue) {
       break;
     case OPERATORS.SIGN:
       valueObj.current = calculatorValue.current * -1;
+      valueObj.previous = '0';
       break;
     case OPERATORS.PERCENT:
       valueObj.current = calculatorValue.current / 100;
@@ -69,14 +79,17 @@ function applyOperator(currentValue, calculatorValue, operatorValue) {
 }
 
 const divide = (operand1, operand2) => {
-  return Number(operand1) / Number(operand2);
+  return (Number(operand1) / Number(operand2)).toString();
 };
+
 const multiply = (operand1, operand2) => {
-  return Number(operand1) * Number(operand2);
+  return (Number(operand1) * Number(operand2)).toString();
 };
+
 const minus = (operand1, operand2) => {
-  return Number(operand1) - Number(operand2);
+  return (Number(operand1) - Number(operand2)).toString();
 };
+
 const plus = (operand1, operand2) => {
-  return Number(operand1) + Number(operand2);
+  return (Number(operand1) + Number(operand2)).toString();
 };

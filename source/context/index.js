@@ -1,3 +1,3 @@
-import React from "react";
+import React from 'react';
 
-export let CalculatorContext = React.createContext(null)
+export let CalculatorContext = React.createContext(null);
